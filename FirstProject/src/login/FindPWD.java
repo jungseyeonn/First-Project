@@ -6,18 +6,23 @@ import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 public class FindPWD extends WindowAdapter implements ActionListener {
-	private JFrame f;
-	private TextField tfid, tfemail;
-	private Button bok;
+	private JFrame f, ff;
+	private TextField tfid, tfemail, tfrepwd, tfrere;
+	private Button bcon, brepwd;
+	private LoginDAO dao;
 
 	public FindPWD() {
+		dao = new LoginDAO();
+		
 		f = new JFrame("비밀번호 찾기 - 이메일인증");
 		f.setSize(400, 300);
-		f.setLocation(600, 300);
+		f.setLocation(750, 450);
 		f.setLayout(null);
 		f.addWindowListener(this);
 
@@ -39,17 +44,88 @@ public class FindPWD extends WindowAdapter implements ActionListener {
 		tfemail.setBounds(130, 120, 200, 30);
 		f.add(tfemail);
 
-		bok = new Button("인증하기");
-		bok.setBounds(150, 190, 80, 40);
-		bok.addActionListener(this);
-		f.add(bok);
+		bcon = new Button("인증하기");
+		bcon.setBounds(150, 190, 80, 40);
+		bcon.addActionListener(this);
+		f.add(bcon);
 
 		f.setVisible(true);
+
+		ff = new JFrame("비밀번호 재설정");
+		ff.setSize(500, 300);
+		ff.setLocation(600, 300);
+		ff.setLayout(null);
+		ff.addWindowListener(this);
+
+		Label lrepwd = new Label("비밀번호 재설정 : ");
+		lrepwd.setBounds(40, 60, 100, 40);
+		ff.add(lrepwd);
+
+		tfrepwd = new TextField();
+		tfrepwd.setBounds(180, 60, 230, 30);
+		tfrepwd.setEchoChar('*');
+		ff.add(tfrepwd);
+
+		Label lrere = new Label("비밀번호 재입력 : ");
+		lrere.setBounds(40, 120, 100, 40);
+		ff.add(lrere);
+
+		tfrere = new TextField();
+		tfrere.setBounds(180, 120, 230, 30);
+		tfrere.setEchoChar('*');
+		ff.add(tfrere);
+
+		brepwd = new Button("비밀번호 재설정하기");
+		brepwd.setBounds(170, 190, 130, 40);
+		brepwd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(e.getSource()==brepwd) {
+					if(tfrepwd.getText().equals(tfrere.getText())) {
+						JOptionPane.showMessageDialog(null, "비밀번호가 변경되었습니다. 재로그인해주세요.", "PLAIN_MESSAGE", JOptionPane.PLAIN_MESSAGE);
+						ff.dispose();
+						repwd();
+					} else {
+						JOptionPane.showMessageDialog(null, "비밀번호를 동일하게 입력해주세요.", "PLAIN_MESSAGE", JOptionPane.PLAIN_MESSAGE);
+					}
+				}
+			}
+		});
+		ff.add(brepwd);
+	}
+
+	private void repwd() {
+		String id = tfid.getText();
+		String pwd = tfrepwd.getText();
+		System.out.println(pwd);
+
+		dao.re(id, pwd);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+		String id = tfid.getText();
+		String email = tfemail.getText();
+		ArrayList<FoundPVo> listpwd = dao.listpwd(id, email);
+	
+		if (listpwd.size() == 1) {
+			FoundPVo data = (FoundPVo) listpwd.get(0);
+			String sid = data.getid();
+			String semail = data.getemail();
+
+			if (tfid.getText().equals(sid) && tfemail.getText().equals(semail)) {
+				JOptionPane.showMessageDialog(null, "비밀번호를 재설정해주세요.", "PLAIN_MESSAGE", JOptionPane.PLAIN_MESSAGE);
+				f.dispose();
+				ff.setVisible(true);
+			} else {
+				JOptionPane.showMessageDialog(null, "아이디와 이메일을 확인해주세요.", "ERROR", JOptionPane.ERROR_MESSAGE);
+			}
+		} else if (tfid.getText().isEmpty()) {
+			JOptionPane.showMessageDialog(null, "아이디를 입력해주세요.", "ERROR", JOptionPane.ERROR_MESSAGE);
+		} else if (tfemail.getText().isEmpty()) {
+			JOptionPane.showMessageDialog(null, "이메일을 입력해주세요.", "ERROR", JOptionPane.ERROR_MESSAGE);
+		} else {
+			JOptionPane.showMessageDialog(null, "존재하지 않는 아이디 혹은 이메일입니다.", "ERROR", JOptionPane.ERROR_MESSAGE);
+		}
 
 	}
 }
