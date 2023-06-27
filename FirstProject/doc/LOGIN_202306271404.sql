@@ -1,0 +1,11 @@
+INSERT INTO "C##FIRSTPROJ".LOGIN (SID,SEMAIL,SPWD,UDIV) VALUES ('yeun','yeun@gamil.com','1111','개인');
+INSERT INTO "C##FIRSTPROJ".LOGIN (SID,SEMAIL,SPWD,UDIV) VALUES ('test','test','test','선생님');
+INSERT INTO "C##FIRSTPROJ".LOGIN (SID,SEMAIL,SPWD,UDIV) VALUES ('jiyun','jiyun@nate.com','0000','개인');
+INSERT INTO "C##FIRSTPROJ".LOGIN (SID,SEMAIL,SPWD,UDIV) VALUES ('seungjin','seungjin@nate.com','ssss','개인');
+INSERT INTO "C##FIRSTPROJ".LOGIN (SID,SEMAIL,SPWD,UDIV) VALUES ('sahee','sahee@gamil.com','s1234s','개인');
+INSERT INTO "C##FIRSTPROJ".LOGIN (SID,SEMAIL,SPWD,UDIV) VALUES ('yhn1032','yhn1032@naver.com','1234','개인');
+INSERT INTO "C##FIRSTPROJ".LOGIN (SID,SEMAIL,SPWD,UDIV) VALUES ('mijeong','mijeong@naver.com','9870','개인');
+INSERT INTO "C##FIRSTPROJ".LOGIN (SID,SEMAIL,SPWD,UDIV) VALUES ('naeun','naeun@gmail.com','0naeun','선생님');
+INSERT INTO "C##FIRSTPROJ".LOGIN (SID,SEMAIL,SPWD,UDIV) VALUES ('seyeon','seyeon@gmail.com','1234','선생님');
+INSERT INTO "C##FIRSTPROJ".LOGIN (SID,SEMAIL,SPWD,UDIV) VALUES ('byungkwon','byungkwon@gmail.com','7777','개인');
+INSERT INTO "C##FIRSTPROJ".LOGIN (SID,SEMAIL,SPWD,UDIV) VALUES ('gangyeon','gangyeon@naver.com','9999','개인');
