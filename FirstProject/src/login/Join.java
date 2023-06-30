@@ -2,6 +2,8 @@ package login;
 
 import java.awt.Button;
 import java.awt.Choice;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Label;
 import java.awt.TextField;
 import java.awt.event.ActionEvent;
@@ -17,30 +19,36 @@ public class Join extends WindowAdapter implements ActionListener{
 	private TextField tfid, tfpwd, tfrep, tfemail;
 	private Button bj;
 	private LoginDAO dao;
+	private Font f;
 	
 	public Join() {		
 		fJoin = new JFrame("회원가입");
-		fJoin.setSize(400,500);
-		fJoin.setLocation(750, 300);
+		fJoin.setSize(400,480);
+		fJoin.setLocation(750, 370);
 		fJoin.setLayout(null);
 		fJoin.addWindowListener(this);
+		fJoin.getContentPane().setBackground(Color.white);
 		
+		f = new Font("NEXON Lv1 Gothic", Font.BOLD, 13);
 		jco = new Choice();
 		jco.add("선생님");
 		jco.add("개인");
-		jco.setBounds(40, 30, 200, 40);
+		jco.setBounds(40, 30, 100, 40);
+		jco.setFont(f);
 		fJoin.add(jco);
 		
 		Label lid = new Label("아이디 : ");
-		lid.setBounds(40, 80, 70, 40);
+		lid.setBounds(40, 85, 70, 40);
+		lid.setFont(f);
         fJoin.add(lid);
         
         tfid = new TextField();
-        tfid.setBounds(140, 80, 200, 30);
+        tfid.setBounds(140, 90, 200, 30);
         fJoin.add(tfid);
         
         Label lpwd = new Label("비밀번호 : ");
-        lpwd.setBounds(40, 140, 70, 40);
+        lpwd.setBounds(40, 150, 70, 40);
+        lpwd.setFont(f);
         fJoin.add(lpwd);
         
         tfpwd = new TextField();
@@ -49,7 +57,8 @@ public class Join extends WindowAdapter implements ActionListener{
         fJoin.add(tfpwd);
         
         Label lrepwd = new Label("비밀번호 재확인 : ");
-        lrepwd.setBounds(13, 220, 100, 40);
+        lrepwd.setBounds(13, 220, 120, 40);
+        lrepwd.setFont(f);
         fJoin.add(lrepwd);
         
         tfrep = new TextField();
@@ -59,6 +68,7 @@ public class Join extends WindowAdapter implements ActionListener{
         
         Label lemail = new Label("이메일 : ");
         lemail.setBounds(40, 290, 70, 40);
+        lemail.setFont(f);
         fJoin.add(lemail);
         
         tfemail = new TextField();
@@ -68,6 +78,8 @@ public class Join extends WindowAdapter implements ActionListener{
         bj = new Button("회원가입"); 
         bj.setBounds(130, 350, 80, 40);
         bj.addActionListener(this);
+        bj.setBackground(Color.white);
+        bj.setFont(f);
         fJoin.add(bj);
         
         bj.addActionListener(new ActionListener() {

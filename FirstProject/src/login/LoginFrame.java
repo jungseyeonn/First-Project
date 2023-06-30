@@ -2,6 +2,8 @@ package login;
 
 import java.awt.Button;
 import java.awt.Choice;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Label;
 import java.awt.TextField;
 import java.awt.event.ActionEvent;
@@ -17,6 +19,7 @@ public class LoginFrame extends WindowAdapter implements ActionListener {
 	private Choice userChoice;
 	private Button bLogin, bJoin, bFpwd;
 	private LoginDAO dao;
+	private Font font;
 
 	public LoginFrame() {
 		dao = new LoginDAO();
@@ -27,22 +30,28 @@ public class LoginFrame extends WindowAdapter implements ActionListener {
 		f.setLayout(null);
 		f.addWindowListener(this);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+		f.getContentPane().setBackground(Color.white);
+		font = new Font("NEXON Lv1 Gothic", Font.BOLD, 13);
+		
 		userChoice = new Choice();
 		userChoice.add("선생님");
 		userChoice.add("개인");
 		userChoice.setBounds(60, 30, 100, 40);
+		userChoice.setFont(font);
 		f.add(userChoice);
 
 		Label usernameLabel = new Label("ID : ");
+		usernameLabel.setFont(font);
 		usernameLabel.setBounds(50, 80, 100, 40);
 		f.add(usernameLabel);
 
 		tfid = new TextField();
 		tfid.setBounds(150, 80, 200, 40);
+		tfid.setFont(new Font("NEXON Lv1 Gothic", Font.PLAIN,13));
 		f.add(tfid);
 
 		Label passwordLabel = new Label("Password : ");
+		passwordLabel.setFont(font);
 		passwordLabel.setBounds(50, 150, 100, 40);
 		f.add(passwordLabel);
 
@@ -55,26 +64,33 @@ public class LoginFrame extends WindowAdapter implements ActionListener {
 		tfmsg.setBounds(60, 220, 380, 70);
 		tfmsg.setEditable(false);
 		tfmsg.setFocusable(false);
+		tfmsg.setFont(font);
 		f.add(tfmsg);
 
 		bLogin = new Button("Login");
 		bLogin.setBounds(380, 100, 80, 50);
 		bLogin.addActionListener(this);
+		bLogin.setBackground(Color.white);
+		bLogin.setFont(font);
 		f.add(bLogin);
 
 		bJoin = new Button("회원가입");
-		bJoin.setBounds(130, 310, 60, 30);
+		bJoin.setBounds(130, 310, 80, 30);
 		bJoin.addActionListener(this);
+		bJoin.setBackground(Color.white);
+		bJoin.setFont(font);
 		f.add(bJoin);
 
 		bFpwd = new Button("비밀번호 찾기");
+		bFpwd.setFont(font);
 		bFpwd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("비밀번호 찾기 페이지로 이동합니다.");
 				FindPWD fp = new FindPWD();
 			}
 		});
-		bFpwd.setBounds(270, 310, 90, 30);
+		bFpwd.setBounds(270, 310, 100, 30);
+		bFpwd.setBackground(Color.white);
 		f.add(bFpwd);
 
 		f.setVisible(true);
@@ -108,7 +124,7 @@ public class LoginFrame extends WindowAdapter implements ActionListener {
 				tfmsg.setText("비밀번호가 올바르지 않습니다. 다시 확인해주세요.");
 			}
 		} else {
-			tfmsg.setText("아이디/비밀번호 혹은 선생님/개인 구분을 다시 확인해주세요.");
+			tfmsg.setText("로그인 정보를 다시 확인해주세요.");
 		}
 	}
 

@@ -1,6 +1,8 @@
 package login;
 
 import java.awt.Button;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Label;
 import java.awt.TextField;
 import java.awt.event.ActionEvent;
@@ -16,6 +18,7 @@ public class FindPWD extends WindowAdapter implements ActionListener {
 	private TextField tfid, tfemail, tfrepwd, tfrere;
 	private Button bcon, brepwd;
 	private LoginDAO dao;
+	private Font font;
 
 	public FindPWD() {
 		dao = new LoginDAO();
@@ -25,11 +28,14 @@ public class FindPWD extends WindowAdapter implements ActionListener {
 		f.setLocation(750, 450);
 		f.setLayout(null);
 		f.addWindowListener(this);
+		f.getContentPane().setBackground(Color.white);
 
 		System.out.println("FIndPWD()");
 
 		Label lid = new Label("아이디 : ");
 		lid.setBounds(50, 60, 70, 40);
+		font = new Font("NEXON Lv1 Gothic", Font.BOLD, 13);
+		lid.setFont(font);
 		f.add(lid);
 
 		tfid = new TextField();
@@ -38,6 +44,7 @@ public class FindPWD extends WindowAdapter implements ActionListener {
 
 		Label lemail = new Label("이메일 : ");
 		lemail.setBounds(50, 100, 70, 80);
+		lemail.setFont(font);
 		f.add(lemail);
 
 		tfemail = new TextField();
@@ -47,6 +54,8 @@ public class FindPWD extends WindowAdapter implements ActionListener {
 		bcon = new Button("인증하기");
 		bcon.setBounds(150, 190, 80, 40);
 		bcon.addActionListener(this);
+		bcon.setBackground(Color.white);
+		bcon.setFont(font);
 		f.add(bcon);
 
 		f.setVisible(true);
@@ -55,6 +64,7 @@ public class FindPWD extends WindowAdapter implements ActionListener {
 		ff.setSize(500, 300);
 		ff.setLocation(600, 300);
 		ff.setLayout(null);
+		ff.getContentPane().setBackground(Color.white);
 		ff.addWindowListener(this);
 
 		Label lrepwd = new Label("비밀번호 재설정 : ");
@@ -77,6 +87,7 @@ public class FindPWD extends WindowAdapter implements ActionListener {
 
 		brepwd = new Button("비밀번호 재설정하기");
 		brepwd.setBounds(170, 190, 130, 40);
+		brepwd.setBackground(Color.white);
 		brepwd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(e.getSource()==brepwd) {

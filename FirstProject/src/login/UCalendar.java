@@ -3,6 +3,7 @@ package login;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -15,82 +16,113 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-class UCalendar extends JFrame implements ActionListener{
+class UCalendar extends JFrame implements ActionListener {
 	MainDAO dao = new MainDAO();
-	
+
 	String[] days = { "일", "월", "화", "수", "목", "금", "토" };
 	int year, month, day, todays, memoday = 0;
-	
+
 	Font f;
 	Color bc, fc;
 	Calendar today, cal;
-	
+
 	JButton btnBefore, btnAfter;
 	JButton[] calBtn = new JButton[49];
-	
+
 	JLabel jlSchool, jlScedule;
-	
+
 	JPanel panWest, panSouth, panEast, panNorth;
-	
+
 	JTextField txtMonth, txtYear, txtTime;
-	JTextArea txtschool,txtschedule;
+	JTextArea txtschool, txtschedule;
 	BorderLayout bLayout = new BorderLayout();
-	
+
 	public UCalendar() {
 		today = Calendar.getInstance();
 		cal = new GregorianCalendar();
 		year = today.get(Calendar.YEAR);
 		month = today.get(Calendar.MONTH) + 1;// 1월의 값이 0
-		
+
 		panNorth = new JPanel();
+		panNorth.setBackground(Color.white);
 		panNorth.add(btnBefore = new JButton("Before"));
 		panNorth.add(txtYear = new JTextField(year + "년"));
 		panNorth.add(txtMonth = new JTextField(month + "월"));
 		txtYear.setEnabled(false);
 		txtMonth.setEnabled(false);
-		
+
 		panNorth.add(btnAfter = new JButton("After"));
-		f = new Font("Sherif", Font.BOLD, 24);
+		f = new Font("NEXON Lv1 Gothic", Font.BOLD, 26);
 		txtYear.setFont(f);
 		txtMonth.setFont(f);
-		
-		add(panNorth, "North");
 
-		// 달력		
-		panWest = new JPanel(new GridLayout(7, 7));// 격자나,눈금형태의 배치관리자
-		f = new Font("Sherif", Font.BOLD, 12);
+		add(panNorth, "North");
 		
+		//오늘 날짜 출력
+		JLabel lb1 = new JLabel();
+		lb1.setFont(new Font("NEXON Lv1 Gothic", Font.BOLD, 15));
+		String t1 ="오늘날짜 : " + today.get(Calendar.YEAR) + " 년 " + (today.get(Calendar.MONTH)+1) + " 월 " + today.get(Calendar.DAY_OF_MONTH) + " 일";
+		lb1.setText(t1);
+		lb1.setForeground(Color.orange);
+		panNorth.add(lb1);
+
+		// 달력
+		panWest = new JPanel(new GridLayout(7, 7));// 격자나,눈금형태의 배치관리자
+
 		gridInit();
 		calSet();
 		hideInit();
 		add(panWest, "West");
 
 		panEast = new JPanel();
+		panEast.setBackground(Color.white);
+		panEast.setLayout(new FlowLayout());
+		add(panEast);
+
+		f = new Font("NEXON Lv1 Gothic", Font.BOLD, 13);
+
 		panEast.add(jlSchool = new JLabel("학교명"));
-		panEast.add(txtschool = new JTextArea());
-		txtschool.setPreferredSize(new Dimension(140, 280));
-		add(panEast, "Center");
+		jlSchool.setFont(f);
+
+		txtschool = new JTextArea();
+		txtschool.setPreferredSize(new Dimension(130, 800));
 		txtschool.setEditable(false);
 		txtschool.setFocusable(false);
-		txtschool.setFont(new Font("맑은고딕",1,15));
+		txtschool.setFont(new Font("NEXON Lv1 Gothic", Font.BOLD, 13));
+		panEast.add(txtschool);
+
+		JScrollPane nameScroll = new JScrollPane(txtschool); // JTextArea를 JScrollPane로 감싸기
+		nameScroll.setPreferredSize(new Dimension(180, 300)); // 스크롤 패널의 우선 크기 설정
+		nameScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		panEast.add(nameScroll); // JScrollPane를 패널에 추가
 
 		panEast.add(jlScedule = new JLabel("오늘일정"));
-		panEast.add(txtschedule = new JTextArea());
-		txtschedule.setPreferredSize(new Dimension(140, 280));
-		add(panEast, "Center");
+		jlScedule.setFont(f);
+
+		txtschedule = new JTextArea();
+		txtschedule.setPreferredSize(new Dimension(130, 800));
 		txtschedule.setEditable(false);
 		txtschedule.setFocusable(false);
-		txtschedule.setFont(new Font("맑은고딕",1,15));
-		
+		txtschedule.setFont(new Font("NEXON Lv1 Gothic", Font.BOLD, 13));
+		panEast.add(txtschedule);
+
+		JScrollPane scheduleScroll = new JScrollPane(txtschedule);
+		scheduleScroll.setPreferredSize(new Dimension(180, 300));
+		scheduleScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		panEast.add(scheduleScroll);
+
 		btnBefore.addActionListener(this);
+		btnBefore.setFont(f);
 		btnAfter.addActionListener(this);
-		
+		btnAfter.setFont(f);
+
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("시흥시 일정관리 시스템 - 개인");
-		setBounds(630,380,800,400);
+		setBounds(600, 380, 850, 400);
 		setVisible(true);
 	}
 
@@ -100,9 +132,11 @@ class UCalendar extends JFrame implements ActionListener{
 		cal.set(Calendar.DATE, 1);
 		int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
 
-		/*get 및 set 를 위한 필드치로, 요일을 나타냅니다.
-	이 필드의 값은 SUNDAY,MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY, 및 SATURDAY
-			get()메소드의 의해 요일이 숫자로 반환*/
+		/*
+		 * get 및 set 를 위한 필드치로, 요일을 나타냅니다. 이 필드의 값은
+		 * SUNDAY,MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY, 및 SATURDAY get()메소드의 의해 요일이
+		 * 숫자로 반환
+		 */
 
 		int j = 0;
 		int hopping = 0;
@@ -111,13 +145,12 @@ class UCalendar extends JFrame implements ActionListener{
 		for (int i = cal.getFirstDayOfWeek(); i < dayOfWeek; i++) {
 			j++;
 		}
-		//일요일부터 그달의 첫시작 요일까지 빈칸으로 셋팅하기 위해
+		// 일요일부터 그달의 첫시작 요일까지 빈칸으로 셋팅하기 위해
 		hopping = j;
 		for (int kk = 0; kk < hopping; kk++) {
 			calBtn[kk + 7].setText("");
 		}
-		for (int i = cal.getMinimum(Calendar.DAY_OF_MONTH);
-				i <= cal.getMaximum(Calendar.DAY_OF_MONTH); i++) {
+		for (int i = cal.getMinimum(Calendar.DAY_OF_MONTH); i <= cal.getMaximum(Calendar.DAY_OF_MONTH); i++) {
 			cal.set(Calendar.DATE, i);
 			if (cal.get(Calendar.MONTH) != month - 1) {
 				break;
@@ -125,8 +158,7 @@ class UCalendar extends JFrame implements ActionListener{
 			todays = i;
 			if (memoday == 1) {
 				calBtn[i + 6 + hopping].setForeground(new Color(0, 255, 0));
-			}
-			else {
+			} else {
 				calBtn[i + 6 + hopping].setForeground(new Color(0, 0, 0));
 				if ((i + hopping - 1) % 7 == 0) {// 일요일
 					calBtn[i + 6 + hopping].setForeground(new Color(255, 0, 0));
@@ -136,12 +168,14 @@ class UCalendar extends JFrame implements ActionListener{
 				}
 			}
 
-			/*요일을 찍은 다음부터 계산해야 하니 요일을 찍은 버튼의 갯수를 더하고
- 			인덱스가 0부터 시작이니 -1을 해준 값으로 연산을 해주고
-			버튼의 색깔을 변경해준다.*/
+			/*
+			 * 요일을 찍은 다음부터 계산해야 하니 요일을 찍은 버튼의 갯수를 더하고 인덱스가 0부터 시작이니 -1을 해준 값으로 연산을 해주고 버튼의
+			 * 색깔을 변경해준다.
+			 */
 			calBtn[i + 6 + hopping].setText((i) + "");
-		} 
+		}
 	}
+
 	public void actionPerformed(ActionEvent ae) {
 		if (ae.getSource() == btnBefore) {
 			this.panWest.removeAll();
@@ -152,8 +186,7 @@ class UCalendar extends JFrame implements ActionListener{
 			hideInit();
 			this.txtYear.setText(year + "년");
 			this.txtMonth.setText(month + "월");
-		}
-		else if (ae.getSource() == btnAfter) {
+		} else if (ae.getSource() == btnAfter) {
 			this.panWest.removeAll();
 			calInput(1);
 			gridInit();
@@ -162,26 +195,25 @@ class UCalendar extends JFrame implements ActionListener{
 			hideInit();
 			this.txtYear.setText(year + "년");
 			this.txtMonth.setText(month + "월");
-		} 
-		else if (Integer.parseInt(ae.getActionCommand()) >= 1 && Integer.parseInt(ae.getActionCommand()) <= 31) {
+		} else if (Integer.parseInt(ae.getActionCommand()) >= 1 && Integer.parseInt(ae.getActionCommand()) <= 31) {
 			day = Integer.parseInt(ae.getActionCommand());
 			// 버튼의 밸류 즉 1,2,3.... 문자를 정수형으로 변환하여 클릭한 날짜를 바꿔준다.
 			System.out.println(day);
 			calSet();
-			
+
 			ArrayList<MainVo> listca = dao.listca(year, month, day);
-			
-			if (listca.size()!=0) {
-				for(int i=0;i<listca.size();i++) {
+
+			if (listca.size() != 0) {
+				for (int i = 0; i < listca.size(); i++) {
 					MainVo data = (MainVo) listca.get(i);
 					String sd = data.getSch();
 					String nd = data.getName();
-					if(i==0) {
-						txtschool.setText((i+1)+" "+ nd+"\n");
-						txtschedule.setText((i+1) +" "+ sd+"\n");
+					if (i == 0) {
+						txtschool.setText((i + 1) + " " + nd + "\n");
+						txtschedule.setText((i + 1) + " " + sd + "\n");
 					} else {
-						txtschool.append((i+1)+" "+nd+"\n");
-						txtschedule.append((i+1)+" "+sd+"\n");
+						txtschool.append((i + 1) + " " + nd + "\n");
+						txtschedule.append((i + 1) + " " + sd + "\n");
 					}
 				}
 			} else {
@@ -190,16 +222,18 @@ class UCalendar extends JFrame implements ActionListener{
 			}
 		}
 	}
+
 	public void hideInit() {
 		for (int i = 0; i < calBtn.length; i++) {
 			if ((calBtn[i].getText()).equals(""))
 				calBtn[i].setEnabled(false);
 			// 일이 찍히지 않은 나머지 버튼을 비활성화 시킨다.
-		} 
+				calBtn[i].setBackground(Color.white);
+		}
 	}
-	
+
 	public void gridInit() {
-	// jPanel3에 버튼 붙이기
+		// jPanel3에 버튼 붙이기
 		for (int i = 0; i < days.length; i++)
 			panWest.add(calBtn[i] = new JButton(days[i]));
 		for (int i = days.length; i < 49; i++) {
@@ -207,12 +241,12 @@ class UCalendar extends JFrame implements ActionListener{
 			calBtn[i].addActionListener(this);
 		}
 	}
-	
+
 	public void panelInit() {
 		GridLayout gridLayout1 = new GridLayout(7, 7);
 		panWest.setLayout(gridLayout1);
 	}
-	
+
 	public void calInput(int gap) {
 		month += (gap);
 		if (month <= 0) {

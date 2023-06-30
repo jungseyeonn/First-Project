@@ -23,12 +23,7 @@ public class MainDAO {
 		// 콤보박스에 학교이름 넣기
 		try {
 			connDB();
-			String query = "SELECT SNAME FROM SCHOOL";
-			
-//			TCalendar tc = new TCalendar();
-//			if (div.contains("초")) {
-//				query += " where sdiv = '" + tc.cd + "'";
-//			} itemStateEvent
+			String query = "SELECT INAME FROM SINFO";
 
 			rs = stmt.executeQuery(query);
 			rs.last();
@@ -40,9 +35,9 @@ public class MainDAO {
 				rs.beforeFirst();
 
 				while (rs.next()) {
-					String sname = rs.getString("SNAME");
+					String iname = rs.getString("INAME");
 
-					MainVo data = new MainVo(sname);
+					MainVo data = new MainVo(iname);
 					chosc.add(data);
 				}
 			}
@@ -110,26 +105,56 @@ public class MainDAO {
 	}
 
 	// 삭제
-	public void delete(String div, String name, String schedule, int year, int month, int day) {
+	public int delete(String div, String name, String schedule, int year, int month, int day) {
+
 		try {
 			connDB();
+
+			String sqldb = "SELECT SDIV , SNAME, SCHEDULE, to_char(SDAY, 'yyyy'), TO_NUMBER(TO_CHAR(SDAY, 'MM')), TO_NUMBER(TO_CHAR(SDAY, 'DD')) FROM SCHOOL";
+
+			if (div != null) {
+				sqldb += " WHERE Sdiv ='" + div + "'and sNAME = '" + name + "' and schedule = '" + schedule
+						+ "' and to_char(SDAY, 'yyyy') = '" + year + "' and TO_NUMBER(TO_CHAR(SDAY, 'MM')) = '" + month + "' and TO_NUMBER(TO_CHAR(SDAY, 'DD')) = '" + day+ "'";
+			}
+
+			System.out.println(sqldb);
+
+			rs = stmt.executeQuery(sqldb);
+			rs.last();
+			
+			if (rs.getRow() == 0) {
+				System.out.println("Select fail.\n");
+				return 0;
+			} else {
+				System.out.println("Select success.\n");
+				rs.previous();
+			
+				while (rs.next()) {
+					String sdiv = rs.getString("sdiv");
+					String sname = rs.getString("sname");
+					String sc = rs.getString("schedule");
+				}
+			}
+
 			String sql = "delete from School";
 			if (div != null) {
 				sql += " where sdiv = '" + div + "' AND sname = '" + name + "' AND schedule ='" + schedule
 						+ "' AND sday =" + "TO_DATE('" + year + "-" + month + "-" + day + "','YYYY-MM-DD')";
 			}
-			System.out.println("sql : " + sql);
+			
+			System.out.println(sql);			
 			rs = stmt.executeQuery(sql);
 			boolean b = stmt.execute(sql);
 			if (!b) {
-				System.out.println("Insert success.\n");
+				System.out.println("Delete success.\n");
 			} else {
-				System.out.println("Insert fail.\n");
+				System.out.println("Delete fail.\n");
 			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
-
+		}		
+		return 1;
 	}
 
 	public void connDB() {
