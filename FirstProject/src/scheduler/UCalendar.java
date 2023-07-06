@@ -1,4 +1,4 @@
-package login;
+package scheduler;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -198,7 +198,7 @@ class UCalendar extends JFrame implements ActionListener {
 		} else if (Integer.parseInt(ae.getActionCommand()) >= 1 && Integer.parseInt(ae.getActionCommand()) <= 31) {
 			day = Integer.parseInt(ae.getActionCommand());
 			// 버튼의 밸류 즉 1,2,3.... 문자를 정수형으로 변환하여 클릭한 날짜를 바꿔준다.
-			System.out.println(day);
+//			System.out.println(day);
 			calSet();
 
 			ArrayList<MainVo> listca = dao.listca(year, month, day);

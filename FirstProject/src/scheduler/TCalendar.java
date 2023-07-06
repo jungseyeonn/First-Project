@@ -1,4 +1,4 @@
-package login;
+package scheduler;
 
 import java.awt.BorderLayout;
 import java.awt.Choice;
@@ -421,9 +421,8 @@ class TCalendar extends JFrame implements ActionListener {
 		} else if (Integer.parseInt(ae.getActionCommand()) >= 1 && Integer.parseInt(ae.getActionCommand()) <= 31) {
 			day = Integer.parseInt(ae.getActionCommand());
 			// 버튼의 밸류 즉 1,2,3.... 문자를 정수형으로 변환하여 클릭한 날짜를 바꿔준다.
-			// 선택한 버튼 색깔 변경 -> 다른거 누르면 다시 돌아가야하는데 안됨 ㅋㅋ ㅠ
+			// 선택한 버튼 색깔 변경
 //			calBtn[day+10].setBackground(new Color(153, 204, 255));
-			System.out.println(day);
 			calSet();
 
 			// 달력에 일자 누르면 DB에 저장된 일정뜸

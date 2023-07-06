@@ -1,4 +1,4 @@
-package login;
+package scheduler;
 
 import java.awt.Button;
 import java.awt.Color;

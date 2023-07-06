@@ -1,4 +1,4 @@
-package login;
+package scheduler;
 
 public class MainVo {
 	private String div, sname, schedule;

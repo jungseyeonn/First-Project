@@ -1,4 +1,4 @@
-package login;
+package scheduler;
 
 public class LoginVo {
 	private String Id, Password, div;
